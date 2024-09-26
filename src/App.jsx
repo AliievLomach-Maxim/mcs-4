@@ -1,67 +1,24 @@
-import { useEffect, useState } from 'react'
-import ArticleList from './components/ArticleList/ArticleList'
-import { fetchArticles } from './api/articles-api'
-import SearchForm from './components/SearchForm/SearchForm'
+// import TestMemo from './components/TestMemo/TestMemo'
+
+// import { useState } from 'react'
+// import Timer from './components/Timer/Timer'
+//
+import TestRef from './components/TestRef/TestRef'
+import LangContextProvider from './context/LangContextProvider'
+// import TestRef2 from './components/TestRef2/TestRef2'
 
 const App = () => {
-	const [articles, setArticles] = useState([])
-	const [isLoading, setIsLoading] = useState(false)
-	const [error, setError] = useState(false)
-	const [page, setPage] = useState(1)
-	const [searchQuery, setSearchQuery] = useState('')
-
-	useEffect(() => {
-		if (!searchQuery) return
-
-		const getArticles = async () => {
-			try {
-				setIsLoading(true)
-				setError(false)
-				const res = await fetchArticles(searchQuery, page)
-				setArticles((prevState) => {
-					return [...prevState, ...res]
-				})
-			} catch (error) {
-				console.error(error)
-				setError(true)
-			} finally {
-				setIsLoading(false)
-			}
-		}
-		getArticles()
-	}, [page, searchQuery])
-
-	const handleSearch = (query) => {
-		setSearchQuery(query)
-		setArticles([])
-		setPage(1)
-	}
-
-	const handlePage = () => {
-		setPage(page + 1)
-	}
-
 	return (
 		<div>
-			<SearchForm onSearch={handleSearch} />
-			{error && <h3>Oops error... pls reload!</h3>}
-			<hr />
-			{articles.length > 0 && <ArticleList items={articles} />}
-
-			{isLoading && <h2>Loading...</h2>}
-
-			{articles.length > 0 && (
-				<button onClick={handlePage}>Load more...</button>
-			)}
+			<LangContextProvider>
+				{/* <TestMemo /> */}
+				<TestRef />
+				{/* <TestRef2 /> */}
+				{/* <button onClick={toggle}>toggle</button>
+			{showTimer && <Timer />} */}
+			</LangContextProvider>
 		</div>
 	)
 }
-export default App
 
-// useEffect(() => {
-// 	const getArticles = async () => {
-// 		const res = await fetchArticles()
-// 		setArticles(res)
-// 	}
-// 	getArticles()
-// }, [])
+export default App
