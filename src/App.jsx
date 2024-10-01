@@ -1,22 +1,24 @@
-// import TestMemo from './components/TestMemo/TestMemo'
-
-// import { useState } from 'react'
-// import Timer from './components/Timer/Timer'
-//
-import TestRef from './components/TestRef/TestRef'
-import LangContextProvider from './context/LangContextProvider'
-// import TestRef2 from './components/TestRef2/TestRef2'
+import { Route, Routes } from 'react-router-dom'
+import HomePage from './pages/HomePage/HomePage'
+import ProductsPage from './pages/ProductsPage/ProductsPage'
+import Navigation from './components/Navigation/Navigation'
+import ProductDetailsPage from './pages/ProductDetailsPage/ProductDetailsPage'
+import UserDetails from './components/UserDetails/UserDetails'
+import CommentDetails from './components/CommentDetails/CommentDetails'
 
 const App = () => {
 	return (
 		<div>
-			<LangContextProvider>
-				{/* <TestMemo /> */}
-				<TestRef />
-				{/* <TestRef2 /> */}
-				{/* <button onClick={toggle}>toggle</button>
-			{showTimer && <Timer />} */}
-			</LangContextProvider>
+			<Navigation />
+			<Routes>
+				<Route path='/' element={<HomePage />} />
+				<Route path='/products' element={<ProductsPage />} />
+				<Route path='/products/:productId' element={<ProductDetailsPage />}>
+					<Route path='user' element={<UserDetails />} />
+					<Route path='comment' element={<CommentDetails />} />
+				</Route>
+				<Route path='*' element={<h2>Oops..404</h2>} />
+			</Routes>
 		</div>
 	)
 }
