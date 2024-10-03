@@ -1,16 +1,25 @@
-import { useEffect, useState } from 'react'
-import { NavLink, Outlet, useParams } from 'react-router-dom'
+import { Suspense, useEffect, useRef, useState } from 'react'
+import { NavLink, Outlet, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { fetchSingleProduct } from '../../api/products-api'
 
 const ProductDetailsPage = () => {
 	const { productId } = useParams()
 	const [product, setProduct] = useState(null)
 
+	const location = useLocation()
+	const backPath = useRef(location.state ?? '/products')
+
+	const navigate = useNavigate()
+
+	console.log('render')
+
 	useEffect(() => {
 		const getSingleProducts = async () => {
 			try {
 				const res = await fetchSingleProduct(productId)
 				setProduct(res)
+				//
+				// navigate(backPath.current,{state:loca})
 			} catch (error) {
 				console.error(error)
 			}
@@ -21,6 +30,8 @@ const ProductDetailsPage = () => {
 	return (
 		product && (
 			<div>
+				<button onClick={() => navigate(backPath.current)}>back</button>
+				{/* <Link to={backPath.current}>Back</Link> */}
 				<ul>
 					<li>Title: {product.title}</li>
 					<li>ID: {product.id}</li>
@@ -39,7 +50,9 @@ const ProductDetailsPage = () => {
 						<NavLink to='comment'>Comment</NavLink>
 					</li>
 				</ul>
-				<Outlet />
+				<Suspense fallback={<h1>LOADING CHILD COMPONENT...</h1>}>
+					<Outlet />
+				</Suspense>
 			</div>
 		)
 	)
