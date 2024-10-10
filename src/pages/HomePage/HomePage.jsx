@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { depositAction, withdrawAction } from '../../redux/balance/actions'
+// import { depositAction, withdrawAction } from '../../redux/balance/actions'
 import { localeAction } from '../../redux/locale/actions'
+import { deposit, withdraw } from '../../redux/balance/reducer'
 
 const HomePage = () => {
 	const dispatch = useDispatch()
@@ -10,11 +11,11 @@ const HomePage = () => {
 	const locale = useSelector((state) => state.locale.value)
 
 	const handleDeposit = () => {
-		dispatch(depositAction(10))
+		dispatch(deposit(10))
 	}
 
 	const handleWithdraw = () => {
-		dispatch(withdrawAction(100))
+		dispatch(withdraw(100))
 	}
 	const handleChangeLang = ({ target: { value } }) => {
 		dispatch(localeAction(value))

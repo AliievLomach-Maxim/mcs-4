@@ -224,12 +224,13 @@
             <li>Композиція редюсерів</li>
         </ul>
 </ul>
-</details>
+
 -- Component
- - Ініціалізувати стан
- - відобразити значення стану в jsx
- - створити ф-ю для зміни стану
- - використати ф-ю
+
+- Ініціалізувати стан
+- відобразити значення стану в jsx
+- створити ф-ю для зміни стану
+- використати ф-ю
 
 --Redux
 
@@ -238,3 +239,20 @@
 - відобразити значення стану в jsx
 - реалізувати ф-ю для зміни стану
 - використати ф-ю
+</details>
+
+<details>
+  <summary>Заняття 2</summary>
+<ul>
+    <li>Redux Toolkit</li>
+    <ul>
+        <li><code>createAction</code></li>
+        <li><code>createReducer</code></li>
+        <ul>
+            <li><code>builder</code></li>
+            <li><code>immer</code></li>
+        </ul>
+        <li><code>createSlice</code></li>
+    </ul>
+</ul>
+</details>

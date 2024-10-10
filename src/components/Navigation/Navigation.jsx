@@ -12,6 +12,9 @@ const Navigation = () => {
 			<NavLink className={generateActiveClass} to='/'>
 				Home
 			</NavLink>
+			<NavLink className={generateActiveClass} to='/posts'>
+				POsts
+			</NavLink>
 			<NavLink className={generateActiveClass} to='/products'>
 				Products
 			</NavLink>
