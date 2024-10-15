@@ -7,6 +7,7 @@ import UserDetails from './components/UserDetails/UserDetails'
 import CommentDetails from './components/CommentDetails/CommentDetails'
 // import { lazy, Suspense } from 'react'
 import PostsPage from './pages/PostsPage/PostsPage'
+import { Toaster } from 'react-hot-toast'
 
 // const ProductsPage = lazy(() => import('./pages/ProductsPage/ProductsPage'))
 // const Navigation = lazy(() => import('./components/Navigation/Navigation'))
@@ -30,6 +31,7 @@ const App = () => {
 				</Route>
 				<Route path='*' element={<h2>Oops..404</h2>} />
 			</Routes>
+			<Toaster />
 			{/* </Suspense> */}
 		</div>
 	)
