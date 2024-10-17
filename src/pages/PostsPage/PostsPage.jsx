@@ -4,9 +4,22 @@ import { useEffect, useRef } from 'react'
 import { createPost, fetchPosts, removePost } from '../../redux/posts/postsOps'
 import { Field, Form, Formik } from 'formik'
 import toast from 'react-hot-toast'
+import SearchFilter from '../../components/SearchFilter/SearchFilter'
+import {
+	selectErrorPosts,
+	selectFilteredPosts,
+	selectLoadingPosts,
+} from '../../redux/posts/postsSlice'
 
 const PostsPage = () => {
-	const { posts, isLoading, error } = useSelector((state) => state.posts)
+	const filteredPosts = useSelector(selectFilteredPosts)
+
+	// const posts = useSelector(selectPosts)
+	const isLoading = useSelector(selectLoadingPosts)
+	const error = useSelector(selectErrorPosts)
+
+	// const searchFilterValue = useSelector(selectFilterValue)
+
 	const dispatch = useDispatch()
 
 	const errorMessageForToast = useRef(null)
@@ -23,16 +36,6 @@ const PostsPage = () => {
 		errorMessageForToast.current = error
 	}, [error])
 
-	// useEffect(() => {
-	// 	// !posts.length && dispatch(fetchPosts())
-	// 	dispatch(fetchPosts())
-	// 		.unwrap()
-	// 		.then(() => {
-	// 			toast.success('Success')
-	// 		})
-	// 		.catch(() => toast.error(`Oops..,${errorMessageForToast.current}`))
-	// }, [dispatch])
-
 	useEffect(() => {
 		const getPosts = async () => {
 			try {
@@ -45,10 +48,15 @@ const PostsPage = () => {
 		getPosts()
 	}, [dispatch])
 
+	// const filteredPosts = posts?.filter((el) =>
+	// 	el.title.toLowerCase().includes(searchFilterValue.toLowerCase())
+	// )
+
 	return (
 		<div>
 			{isLoading && <h1>Loading...</h1>}
 			{error && <h1>Oops...{error}</h1>}
+			<SearchFilter />
 			<Formik initialValues={{ title: '', body: '' }} onSubmit={handleCreatePost}>
 				<Form>
 					<Field type='text' name='title' />
@@ -58,7 +66,9 @@ const PostsPage = () => {
 			</Formik>
 
 			<hr />
-			{posts && posts.length > 0 && <PostLIst posts={posts} handleRemove={handleRemovePost} />}
+			{filteredPosts && filteredPosts.length > 0 && (
+				<PostLIst posts={filteredPosts} handleRemove={handleRemovePost} />
+			)}
 		</div>
 	)
 }
