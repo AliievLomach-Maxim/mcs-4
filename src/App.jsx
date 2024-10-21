@@ -1,47 +1,48 @@
 import { Route, Routes } from 'react-router-dom'
-import HomePage from './pages/HomePage/HomePage'
-import ProductsPage from './pages/ProductsPage/ProductsPage'
-import Navigation from './components/Navigation/Navigation'
-import ProductDetailsPage from './pages/ProductDetailsPage/ProductDetailsPage'
-import UserDetails from './components/UserDetails/UserDetails'
-import CommentDetails from './components/CommentDetails/CommentDetails'
-// import { lazy, Suspense } from 'react'
-import PostsPage from './pages/PostsPage/PostsPage'
-import { Toaster } from 'react-hot-toast'
-import HomeLayout from './layouts/HomeLayout'
-
-// const ProductsPage = lazy(() => import('./pages/ProductsPage/ProductsPage'))
-// const Navigation = lazy(() => import('./components/Navigation/Navigation'))
-// const ProductDetailsPage = lazy(() => import('./pages/ProductDetailsPage/ProductDetailsPage'))
-// const CommentDetails = lazy(() => import('./components/CommentDetails/CommentDetails'))
-// const UserDetails = lazy(() => import('./components/UserDetails/UserDetails'))
-// const HomePage = lazy(() => import('./pages/HomePage/HomePage'))
-import Layout from './layouts/Layout'
+import AppBar from './components/AppBar/AppBar'
+import RegisterPage from './pages/RegisterPage'
+import HomePage from './pages/HomePage'
+import TasksPage from './pages/TasksPage'
+import LoginPage from './pages/LoginPage'
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { refreshUser } from './store/auth/operations'
+import { selectIsRefreshing } from './store/auth/selectors'
+import RestrictedRoute from './guards/RestrictedRoute/RestrictedRoute'
+import PrivateRoute from './guards/PrivateRoute/PrivateRoute'
 
 const App = () => {
-	return (
-		<div>
-			{/* <Navigation /> */}
-			{/* <Suspense fallback={<h1>LOADING COMPONENT...</h1>}> */}
-			<Routes>
-				<Route path='/' element={<HomeLayout />}>
-					<Route index element={<HomePage />} />
-					<Route path='posts' element={<PostsPage />} />
-				</Route>
+	const isRefreshing = useSelector(selectIsRefreshing)
+	const dispatch = useDispatch()
 
-				<Route path='/products' element={<Layout />}>
-					<Route index element={<ProductsPage />} />
-					<Route path=':productId' element={<ProductDetailsPage />}>
-						<Route path='user' element={<UserDetails />} />
-						<Route path='comment' element={<CommentDetails />} />
-					</Route>
-				</Route>
-				<Route path='*' element={<h2>Oops..404</h2>} />
+	useEffect(() => {
+		dispatch(refreshUser())
+	}, [dispatch])
+
+	return isRefreshing ? (
+		<p>refreshing user....</p>
+	) : (
+		<div>
+			<AppBar />
+			<Routes>
+				<Route path='/' element={<HomePage />} />
+				<Route
+					path='/login'
+					element={<RestrictedRoute component={<LoginPage />} />}
+				/>
+				<Route
+					path='/register'
+					element={
+						<RestrictedRoute component={<RegisterPage />} redirectTo='/' />
+					}
+				/>
+				<Route
+					path='/tasks'
+					element={<PrivateRoute component={<TasksPage />} />}
+				/>
+				<Route path='*' element={<div>404</div>} />
 			</Routes>
-			<Toaster />
-			{/* </Suspense> */}
 		</div>
 	)
 }
-
 export default App
